@@ -15,6 +15,8 @@ public class MovieRecommenderDriver {
 
         parseFile(new File(args[0]), executor, bigCollection);
 
+       // executor.execute(new Query(bigCollection, new File(args[0])));
+
 
         executor.shutdown();
         try {
@@ -24,6 +26,7 @@ public class MovieRecommenderDriver {
         }
 
         System.out.println("Program loaded");
+
 
 //        collection.rValue(Integer.parseInt(args[2]));
 //        collection.rankList(args[0]);

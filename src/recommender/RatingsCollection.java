@@ -164,7 +164,7 @@ public class RatingsCollection {
      * of the user whose movie preferences match most with those of the user
      * in question
      *
-     * @param dir
+     * @param dir Directory where movies are found
      */
     public void rankList(String dir) {
         double rating;
