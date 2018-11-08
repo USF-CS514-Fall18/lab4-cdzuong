@@ -43,6 +43,18 @@ public class RatingsCollection {
         return userMax;
     }
 
+    public void appendRatings(RatingsCollection other) {
+        for (Integer userID : other.ratingsMap.keySet()) {
+            TreeMap<Integer, Double> userRating = this.ratingsMap.get(userID);
+            if(userRating == null) {
+                this.ratingsMap.put(userID, other.ratingsMap.get(userID));
+            }
+            userRating.putAll(other.ratingsMap.get(userID));
+        }
+    }
+
+
+
     /**
      * Adds ratings to the ratingsMap TreeMap. Assigns userIDs as keys
      * and a nested TreeMap with movieID as key and movie rating as a double.
