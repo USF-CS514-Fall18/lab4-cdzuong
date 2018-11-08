@@ -12,6 +12,7 @@ public class Query implements Runnable {
     private String output;
     private int userID;
     private int numRecs;
+    private String filename;
 
     public Query(RatingsCollection globalCollection, File inputFolder) {
         this.globalCollection = globalCollection;
@@ -22,7 +23,7 @@ public class Query implements Runnable {
     public void run() {
         System.out.println("Input folder: " + inputFolder);
         movieDir(inputFolder);
-//        parseQuery(inputFolder);
+        parseQuery(inputFolder);
 
     }
 
@@ -45,37 +46,40 @@ public class Query implements Runnable {
 
 
     public void parseQuery(File dir) {
-        if (dir.isDirectory()) {
-            for (File subfile : dir.listFiles()) {
+        for (File subfile : dir.listFiles()) {
+            if (subfile.isDirectory()) {
                 parseQuery(subfile);
-            }
-        } else {
-            if (dir.getPath().contains("queries")) {
+            } else {
+                if (subfile.getPath().contains("queries")) {
+                    System.out.println("ParseQueryReached - after the contains queries thing");
+                    try {
 
-                try {
-                    File file = new File(dir.getPath());
-                    Scanner input = new Scanner(file);
-                    System.out.println("this is queries movie file directory " + movieFile);
-                    while (input.hasNextLine()) {
-                        String[] splitLine = input.nextLine().split(", ");
-                        this.output = splitLine[1];
-                        this.userID = Integer.parseInt(splitLine[2]);
-                        this.numRecs = Integer.parseInt(splitLine[3]);
+                        File file = new File(subfile.getPath());
 
+                        Scanner input = new Scanner(file);
+                        while (input.hasNextLine()) {
+                            String[] splitLine = input.nextLine().split(", ");
+                            this.output = splitLine[1];
+                            this.userID = Integer.parseInt(splitLine[2]);
+                            this.numRecs = Integer.parseInt(splitLine[3]);
+                            this.filename = "User" + userID + "numRecs" + numRecs;
 
-                        globalCollection.rValue(userID);
-                        globalCollection.rankList(movieFile);
-                        globalCollection.makeStarMovieList(userID, numRecs, movieFile, "input/smallSet");
-                        System.out.println("DIRECTORY PASSED TO QUERY: " + movieFile);
+                            System.out.println("Where the output file is supposed to go: " + output);
+
+                            globalCollection.rValue(userID);
+                            globalCollection.rankList(movieFile);
+                            globalCollection.makeStarMovieList(userID, numRecs, movieFile, output, filename);
+                            System.out.println("DIRECTORY PASSED TO QUERY: " + movieFile);
+                        }
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Query file not found // parseQuery method");
                     }
-                } catch (FileNotFoundException e) {
-                    System.out.println("Query file not found // parseQuery method");
+
+
                 }
 
 
             }
-
-
         }
     }
 }

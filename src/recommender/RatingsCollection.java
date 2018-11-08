@@ -205,7 +205,7 @@ public class RatingsCollection {
      * @param n       number of movie recommendations to make
      * @param dir     directory in which the movie list is found
      */
-    public void makeStarMovieList(int compare, int n, String dir, String write) {
+    public void makeStarMovieList(int compare, int n, String dir, String write, String filename) {
         TreeMap<Integer, Double> compareMap = ratingsMap.get(compare);
         for (Double movieIdRatings : rankMovies.keySet()) {
             if (!movieMap.containsKey(movieIdRatings)) {
@@ -229,10 +229,12 @@ public class RatingsCollection {
         }
 
         MovieCollection movieColl = new MovieCollection();
-        movieColl.addMovie(dir + "/movies.csv");
+        movieColl.addMovie(dir);
         String rec;
 
-        try (PrintWriter recs = new PrintWriter(new File(write + "recs.csv"))) {
+        new File(write).getParentFile().mkdirs();
+
+        try (PrintWriter recs = new PrintWriter(new File(write + "recommendations.csv"))) {
             if (n <= movieMap.get(5.0).size()) {
                 for (int i = 0; i < n; i++) {
                     rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
@@ -243,7 +245,8 @@ public class RatingsCollection {
             }
             recs.flush();
         } catch (FileNotFoundException e) {
-            System.out.println("Cannot write recommendations.");
+            e.printStackTrace();
+            System.out.println("Cannot write recommendations - block 5.0: " + write);
         }
         try (PrintWriter antiPrint = new PrintWriter(new File(write + "antirecs.csv"))) {
             System.out.println();
@@ -262,7 +265,7 @@ public class RatingsCollection {
                 antiPrint.println(antirec);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Cannot write anti-recommendations.");
+            System.out.println("Cannot write anti-recommendations. - block highRusers: " + write);
         }
 
 
