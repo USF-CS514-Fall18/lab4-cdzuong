@@ -17,7 +17,6 @@ public class LoadingData implements Runnable {
     public void run() {
         try {
             collection.addRatings(filename);
-            System.out.println(filename + " # ratings ");
             compileGlobalList();
         } catch (Exception e) {
             System.out.println("Loading Data Run" + filename);

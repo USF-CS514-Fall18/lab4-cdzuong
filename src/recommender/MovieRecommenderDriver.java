@@ -1,6 +1,8 @@
 package recommender;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.*;
 
 /**
@@ -15,7 +17,8 @@ public class MovieRecommenderDriver {
 
         parseFile(new File(args[0]), executor, bigCollection);
 
-       // executor.execute(new Query(bigCollection, new File(args[0])));
+
+        executor.execute(new Query(bigCollection, new File("input/smallSet/")));
 
 
         executor.shutdown();
@@ -34,15 +37,16 @@ public class MovieRecommenderDriver {
     }
 
 
-    public static void parseFile(File f, ExecutorService e, RatingsCollection r) {
+    public static void parseFile(File f, ExecutorService e, RatingsCollection globalMap) {
         if (f.isDirectory()) {
             RatingsCollection bigCollection = new RatingsCollection();
             for (File subfile : f.listFiles()) {
-                parseFile(subfile, e, r);
+                parseFile(subfile, e, globalMap);
             }
         } else {
             if (f.getPath().contains("rating")) {
-                e.execute(new LoadingData(f.getPath(), r));
+                e.execute(new LoadingData(f.getPath(), globalMap));
+
             }
         }
     }

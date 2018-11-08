@@ -2,12 +2,13 @@ package recommender;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Query implements Runnable {
     private RatingsCollection globalCollection;
     private File inputFolder;
-    private String input;
+    private String movieFile;
     private String output;
     private int userID;
     private int numRecs;
@@ -19,25 +20,42 @@ public class Query implements Runnable {
     }
 
     public void run() {
-        parseQuery(inputFolder, globalCollection);
+        System.out.println("Input folder: " + inputFolder);
+        movieDir(inputFolder);
+//        parseQuery(inputFolder);
 
     }
 
-    public void parseQuery(File dir, RatingsCollection ratings) {
+    public void movieDir(File dir) {
         if (dir.isDirectory()) {
-            RatingsCollection bigCollection = new RatingsCollection();
             for (File subfile : dir.listFiles()) {
-                parseQuery(subfile, ratings);
+
+                if (subfile.isDirectory()) {
+                    movieDir(subfile);
+                }
+
+                if (subfile.getPath().contains("movies")) {
+                    this.movieFile = subfile.getPath();
+                    System.out.println("This is the movieFile instance variable " + movieFile);
+                    System.out.println("DEBUGGING PARSEQUERY " + movieFile);
+                }
+            }
+        }
+    }
+
+
+    public void parseQuery(File dir) {
+        if (dir.isDirectory()) {
+            for (File subfile : dir.listFiles()) {
+                parseQuery(subfile);
             }
         } else {
-            if (dir.getPath().contains("movies")) {
-                this.input = dir.getPath();
-            }
             if (dir.getPath().contains("queries")) {
+
                 try {
                     File file = new File(dir.getPath());
                     Scanner input = new Scanner(file);
-
+                    System.out.println("this is queries movie file directory " + movieFile);
                     while (input.hasNextLine()) {
                         String[] splitLine = input.nextLine().split(", ");
                         this.output = splitLine[1];
@@ -46,15 +64,18 @@ public class Query implements Runnable {
 
 
                         globalCollection.rValue(userID);
-                        globalCollection.rankList(this.input);
-                        globalCollection.makeStarMovieList(userID, numRecs, this.input, output);
-
+                        globalCollection.rankList(movieFile);
+                        globalCollection.makeStarMovieList(userID, numRecs, movieFile, "input/smallSet");
+                        System.out.println("DIRECTORY PASSED TO QUERY: " + movieFile);
                     }
                 } catch (FileNotFoundException e) {
                     System.out.println("Query file not found // parseQuery method");
                 }
+
+
             }
+
+
         }
     }
-
 }

@@ -43,16 +43,19 @@ public class RatingsCollection {
         return userMax;
     }
 
-    public void appendRatings(RatingsCollection other) {
-        for (Integer userID : other.ratingsMap.keySet()) {
-            TreeMap<Integer, Double> userRating = this.ratingsMap.get(userID);
-            if(userRating == null) {
-                this.ratingsMap.put(userID, other.ratingsMap.get(userID));
+    public void appendRatings(RatingsCollection worker) {
+        for (Integer userID : worker.ratingsMap.keySet()) {
+
+            if(!this.ratingsMap.containsKey(userID)) {
+                this.ratingsMap.put(userID, worker.ratingsMap.get(userID));
             }
-            userRating.putAll(other.ratingsMap.get(userID));
+            TreeMap<Integer, Double> userRating = this.ratingsMap.get(userID);
+            userRating.putAll(worker.ratingsMap.get(userID));
         }
     }
 
+    //DEBUGGING TOOL -- ERASE LATER!!
+    public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
 
 
     /**
@@ -171,7 +174,7 @@ public class RatingsCollection {
         MovieCollection movieColl = new MovieCollection();
         TreeMap<Integer, Double> userRatingMap = ratingsMap.get(userMax);
 
-        movieColl.addMovie(dir + "/movies.csv");
+        movieColl.addMovie(dir);
 
         for (Integer movieIdRatings : userRatingMap.keySet()) {
             rating = userRatingMap.get(movieIdRatings);
