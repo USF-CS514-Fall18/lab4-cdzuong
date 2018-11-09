@@ -18,8 +18,14 @@ public class MovieRecommenderDriver {
 
         parser.parseFile(new File(args[0]));
 
-       executor.execute(new Query(bigCollection, new File("input/smallSet")));
+      executor.execute(new Query(bigCollection, new File("input/smallSet")));
 
+bigCollection.printMap();
+
+//
+//        bigCollection.rValue(3);
+//        bigCollection.rankList("input/smallSet/movies.csv");
+//        bigCollection.makeStarMovieList(3, 5, "input/smallSet/movies.csv", "input/smallSet/results/", "recs.csv");
 
         executor.shutdown();
         try {
@@ -29,11 +35,6 @@ public class MovieRecommenderDriver {
         }
 
         System.out.println("Program loaded");
-
-
-//        collection.rValue(Integer.parseInt(args[2]));
-//        collection.rankList(args[0]);
-//        collection.makeStarMovieList(Integer.parseInt(args[2]), Integer.parseInt(args[3]), args[0], args[1]);
     }
 
 

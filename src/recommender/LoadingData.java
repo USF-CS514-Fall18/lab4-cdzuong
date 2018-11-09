@@ -29,6 +29,18 @@ public class LoadingData implements Runnable {
     public void compileGlobalList() {
         synchronized (lock) {
             globalRatings.appendRatings(collection);
+int counter = 0;
+            for(Integer userID : collection.getMap().keySet()){
+                System.out.println(userID);
+            }
+            System.out.println("GLOBAL RATINGS PRINTER");
+            printGlobalRatings();
+        }
+    }
+
+    public void printGlobalRatings() {
+        for(Integer userID : globalRatings.getMap().keySet()){
+            System.out.println(userID);
         }
     }
 }

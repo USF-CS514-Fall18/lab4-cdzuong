@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.Math.sqrt;
 
 public class RatingsCollection {
-    private ConcurrentHashMap<Integer, TreeMap<Integer, Double>> ratingsMap;
+    private TreeMap<Integer, TreeMap<Integer, Double>> ratingsMap;
     private int userMax;
-    private ConcurrentHashMap<Double, TreeMap<Integer, Movie>> rankMovies;
-    private ConcurrentHashMap<Double, ArrayList<Movie>> movieMap;
+    private TreeMap<Double, TreeMap<Integer, Movie>> rankMovies;
+    private TreeMap<Double, ArrayList<Movie>> movieMap;
     private ArrayList<Integer> highRUsers;
     private ArrayList<Movie> antiMovies;
     private ArrayList<Movie> highMovies;
@@ -25,10 +24,10 @@ public class RatingsCollection {
      * RatingsCollection constructor.
      */
     public RatingsCollection() {
-        ratingsMap = new ConcurrentHashMap<>();
+        ratingsMap = new TreeMap<>();
         userMax = 1;
-        rankMovies = new ConcurrentHashMap<>();
-        movieMap = new ConcurrentHashMap<>();
+        rankMovies = new TreeMap<>();
+        movieMap = new TreeMap<>();
         highRUsers = new ArrayList<>();
         antiMovies = new ArrayList<>();
         highMovies = new ArrayList<>();
@@ -56,7 +55,14 @@ public class RatingsCollection {
     }
 
     //DEBUGGING TOOL -- ERASE LATER!!
-  //  public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
+ public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
+
+    public void printMap(){
+        System.out.println("Printing map");
+        for(Integer userID : ratingsMap.keySet()) {
+            System.out.println(userID);
+        }
+    }
 
 
     /**
@@ -187,7 +193,12 @@ public class RatingsCollection {
                     if (movieIdRatings != movieIdMovieColl) {
                         Map<Integer, Movie> movieInner;
                         movieInner = rankMovies.get(rating);
-                        movieInner.put(movieIdRatings, movieColl.getMap().get(movieIdRatings));
+                        if (movieColl.getMap().get(movieIdRatings) == null){
+                            System.out.println(movieIdRatings + " Missing movieId");
+                        }
+                        else {
+                            movieInner.put(movieIdRatings, movieColl.getMap().get(movieIdRatings));
+                        }
                     }
 
                 }
@@ -197,7 +208,7 @@ public class RatingsCollection {
 
         }
 
-        movieColl.printMovieMap();
+      //  movieColl.printMovieMap();
     }
 
     /**
@@ -273,6 +284,9 @@ public class RatingsCollection {
 
 
     }
+
+    //DEBUGGER
+    public TreeMap<Integer, TreeMap<Integer, Double>> getMap(){return ratingsMap;}
 
 
 }

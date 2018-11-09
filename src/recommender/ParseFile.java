@@ -8,7 +8,7 @@ public class ParseFile {
     private File starterDir;
     private ExecutorService e;
     private RatingsCollection globalMap;
-    private Object lock;
+    private static Object lock;
 
     public ParseFile(File f, ExecutorService e, RatingsCollection globalMap){
         this.starterDir = f;
@@ -25,7 +25,10 @@ public class ParseFile {
             }
         } else {
             if (f.getPath().contains("rating")) {
-                e.execute(new LoadingData(f.getPath(), globalMap, lock));
+                LoadingData loader = new LoadingData(f.getPath(), globalMap, lock);
+                e.execute(loader);
+
+
 
             }
         }
