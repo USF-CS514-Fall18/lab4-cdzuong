@@ -176,7 +176,7 @@ public class RatingsCollection {
      *
      * @param dir Directory where movies are found
      */
-    public synchronized void rankList(String dir) {
+    public synchronized void rankList(String dir, int userMax) {
         double rating;
         MovieCollection movieColl = new MovieCollection();
         TreeMap<Integer, Double> userRatingMap = ratingsMap.get(userMax);
@@ -209,6 +209,15 @@ public class RatingsCollection {
         }
 
       //  movieColl.printMovieMap();
+    }
+
+    public void printRankMovies(){
+        System.out.println("printing rank movies");
+        for(Double rating : rankMovies.keySet()){
+            for(Integer movieID : rankMovies.get(rating).keySet()){
+                System.out.println(rating + " " + movieID + " " + rankMovies.get(rating).get(movieID));
+            }
+        }
     }
 
     /**

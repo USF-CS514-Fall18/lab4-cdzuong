@@ -28,6 +28,7 @@ public class LoadingData implements Runnable {
 
     public void compileGlobalList() {
         synchronized (lock) {
+            collection.printRankMovies();
             globalRatings.appendRatings(collection);
 int counter = 0;
             for(Integer userID : collection.getMap().keySet()){

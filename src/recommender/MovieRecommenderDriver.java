@@ -12,15 +12,17 @@ public class MovieRecommenderDriver {
 
     public static void main(String[] args) {
         // FILL IN CODE and add other classes to this project
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(1);
         RatingsCollection bigCollection = new RatingsCollection();
         ParseFile parser = new ParseFile(new File(args[0]), executor, bigCollection);
 
         parser.parseFile(new File(args[0]));
 
-      executor.execute(new Query(bigCollection, new File("input/smallSet")));
+        bigCollection.printRankMovies();
 
-bigCollection.printMap();
+     // executor.execute(new Query(bigCollection, new File("input/smallSet")));
+
+
 
 //
 //        bigCollection.rValue(3);
