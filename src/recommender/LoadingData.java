@@ -7,11 +7,13 @@ public class LoadingData implements Runnable {
     private String filename;
     private RatingsCollection collection;
     private RatingsCollection globalRatings;
+    private Object lock;
 
-    public LoadingData(String filename, RatingsCollection globalRatings) {
+    public LoadingData(String filename, RatingsCollection globalRatings, Object lock) {
         this.filename = filename;
         this.collection = new RatingsCollection();
         this.globalRatings = globalRatings;
+        this.lock = lock;
     }
 
     public void run() {
@@ -24,7 +26,9 @@ public class LoadingData implements Runnable {
         }
     }
 
-    public synchronized void compileGlobalList() {
-        globalRatings.appendRatings(collection);
+    public void compileGlobalList() {
+        synchronized (lock) {
+            globalRatings.appendRatings(collection);
+        }
     }
 }

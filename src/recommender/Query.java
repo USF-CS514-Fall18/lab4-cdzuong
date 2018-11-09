@@ -23,6 +23,7 @@ public class Query implements Runnable {
     public void run() {
         System.out.println("Input folder: " + inputFolder);
         movieDir(inputFolder);
+
         parseQuery(inputFolder);
 
     }
@@ -37,8 +38,6 @@ public class Query implements Runnable {
 
                 if (subfile.getPath().contains("movies")) {
                     this.movieFile = subfile.getPath();
-                    System.out.println("This is the movieFile instance variable " + movieFile);
-                    System.out.println("DEBUGGING PARSEQUERY " + movieFile);
                 }
             }
         }
@@ -69,8 +68,10 @@ public class Query implements Runnable {
                             globalCollection.rValue(userID);
                             globalCollection.rankList(movieFile);
                             globalCollection.makeStarMovieList(userID, numRecs, movieFile, output, filename);
-                            System.out.println("DIRECTORY PASSED TO QUERY: " + movieFile);
+
                         }
+
+                        input.close();
                     } catch (FileNotFoundException e) {
                         System.out.println("Query file not found // parseQuery method");
                     }

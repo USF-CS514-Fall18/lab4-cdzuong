@@ -99,7 +99,7 @@ public class RatingsCollection {
      * @return The user whose movie preferences match most with the user
      * in question.
      */
-    public int rValue(int compare) {
+    public synchronized int rValue(int compare) {
 
         double xratingUser = 0.0;
         double yratingOthers = 0.0;
@@ -169,7 +169,7 @@ public class RatingsCollection {
      *
      * @param dir Directory where movies are found
      */
-    public void rankList(String dir) {
+    public synchronized void rankList(String dir) {
         double rating;
         MovieCollection movieColl = new MovieCollection();
         TreeMap<Integer, Double> userRatingMap = ratingsMap.get(userMax);
@@ -195,6 +195,8 @@ public class RatingsCollection {
 
 
         }
+
+        movieColl.printMovieMap();
     }
 
     /**
@@ -234,7 +236,7 @@ public class RatingsCollection {
 
         new File(write).getParentFile().mkdirs();
 
-        try (PrintWriter recs = new PrintWriter(new File(write + "recommendations.csv"))) {
+        try (PrintWriter recs = new PrintWriter(new File( write + "Recs" + filename + ".csv"))) {
             if (n <= movieMap.get(5.0).size()) {
                 for (int i = 0; i < n; i++) {
                     rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
@@ -248,7 +250,7 @@ public class RatingsCollection {
             e.printStackTrace();
             System.out.println("Cannot write recommendations - block 5.0: " + write);
         }
-        try (PrintWriter antiPrint = new PrintWriter(new File(write + "antirecs.csv"))) {
+        try (PrintWriter antiPrint = new PrintWriter(new File(write + "Antirecs" + filename + ".csv"))) {
             System.out.println();
             for (int i = 0; i < highRUsers.size(); i++) {
                 for (Integer movieID : ratingsMap.get(highRUsers.get(i)).keySet()) {

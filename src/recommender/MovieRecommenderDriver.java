@@ -12,13 +12,13 @@ public class MovieRecommenderDriver {
 
     public static void main(String[] args) {
         // FILL IN CODE and add other classes to this project
-        ExecutorService executor = Executors.newFixedThreadPool(1);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
         RatingsCollection bigCollection = new RatingsCollection();
+        ParseFile parser = new ParseFile(new File(args[0]), executor, bigCollection);
 
-        parseFile(new File(args[0]), executor, bigCollection);
+        parser.parseFile(new File(args[0]));
 
-
-        executor.execute(new Query(bigCollection, new File("input/smallSet/")));
+       executor.execute(new Query(bigCollection, new File("input/smallSet")));
 
 
         executor.shutdown();
@@ -37,17 +37,17 @@ public class MovieRecommenderDriver {
     }
 
 
-    public static void parseFile(File f, ExecutorService e, RatingsCollection globalMap) {
-        if (f.isDirectory()) {
-            RatingsCollection bigCollection = new RatingsCollection();
-            for (File subfile : f.listFiles()) {
-                parseFile(subfile, e, globalMap);
-            }
-        } else {
-            if (f.getPath().contains("rating")) {
-                e.execute(new LoadingData(f.getPath(), globalMap));
-
-            }
-        }
-    }
+//    public static void parseFile(File f, ExecutorService e, RatingsCollection globalMap) {
+//        if (f.isDirectory()) {
+//            RatingsCollection bigCollection = new RatingsCollection();
+//            for (File subfile : f.listFiles()) {
+//                parseFile(subfile, e, globalMap);
+//            }
+//        } else {
+//            if (f.getPath().contains("rating")) {
+//                e.execute(new LoadingData(f.getPath(), globalMap, ));
+//
+//            }
+//        }
+//    }
 }
