@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.Math.sqrt;
 
 public class RatingsCollection {
-    private TreeMap<Integer, TreeMap<Integer, Double>> ratingsMap;
+    private ConcurrentHashMap<Integer, TreeMap<Integer, Double>> ratingsMap;
     private int userMax;
-    private TreeMap<Double, TreeMap<Integer, Movie>> rankMovies;
-    private TreeMap<Double, ArrayList<Movie>> movieMap;
+    private ConcurrentHashMap<Double, TreeMap<Integer, Movie>> rankMovies;
+    private ConcurrentHashMap<Double, ArrayList<Movie>> movieMap;
     private ArrayList<Integer> highRUsers;
     private ArrayList<Movie> antiMovies;
     private ArrayList<Movie> highMovies;
@@ -24,10 +25,10 @@ public class RatingsCollection {
      * RatingsCollection constructor.
      */
     public RatingsCollection() {
-        ratingsMap = new TreeMap<>();
+        ratingsMap = new ConcurrentHashMap<>();
         userMax = 1;
-        rankMovies = new TreeMap<>();
-        movieMap = new TreeMap<>();
+        rankMovies = new ConcurrentHashMap<>();
+        movieMap = new ConcurrentHashMap<>();
         highRUsers = new ArrayList<>();
         antiMovies = new ArrayList<>();
         highMovies = new ArrayList<>();
@@ -55,7 +56,7 @@ public class RatingsCollection {
     }
 
     //DEBUGGING TOOL -- ERASE LATER!!
-    public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
+  //  public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
 
 
     /**
