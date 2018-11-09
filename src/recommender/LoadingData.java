@@ -19,6 +19,7 @@ public class LoadingData implements Runnable {
     public void run() {
         try {
             collection.addRatings(filename);
+            //   collection.printMap();
             compileGlobalList();
         } catch (Exception e) {
             System.out.println("Loading Data Run" + filename);
@@ -28,20 +29,22 @@ public class LoadingData implements Runnable {
 
     public void compileGlobalList() {
         synchronized (lock) {
-            collection.printRankMovies();
             globalRatings.appendRatings(collection);
-int counter = 0;
-            for(Integer userID : collection.getMap().keySet()){
-                System.out.println(userID);
-            }
-            System.out.println("GLOBAL RATINGS PRINTER");
-            printGlobalRatings();
+            globalRatings.printMap();
+            int counter = 0;
+//            for(Integer userID : collection.getMap().keySet()){
+//                System.out.println(userID);
+//            }
+            // System.out.println("GLOBAL RATINGS PRINTER");
+            //printGlobalRatings();
         }
     }
 
     public void printGlobalRatings() {
-        for(Integer userID : globalRatings.getMap().keySet()){
-            System.out.println(userID);
+        synchronized (lock) {
+            for (Integer userID : globalRatings.getMap().keySet()) {
+                System.out.println(userID);
+            }
         }
     }
 }

@@ -68,7 +68,7 @@ public class Query implements Runnable {
                             int userMax = globalCollection.rValue(userID);
                             globalCollection.rankList(movieFile, userMax);
                             globalCollection.makeStarMovieList(userID, numRecs, movieFile, output, filename);
-
+                            globalCollection.reset();
                         }
 
                         input.close();

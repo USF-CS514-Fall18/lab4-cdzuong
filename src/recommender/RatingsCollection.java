@@ -43,10 +43,19 @@ public class RatingsCollection {
         return userMax;
     }
 
+    public void reset() {
+        userMax = 0;
+        rankMovies = new TreeMap<>();
+        movieMap = new TreeMap<>();
+        highRUsers = new ArrayList<>();
+        antiMovies = new ArrayList<>();
+        highMovies = new ArrayList<>();
+    }
+
     public void appendRatings(RatingsCollection worker) {
         for (Integer userID : worker.ratingsMap.keySet()) {
 
-            if(!this.ratingsMap.containsKey(userID)) {
+            if (!this.ratingsMap.containsKey(userID)) {
                 this.ratingsMap.put(userID, worker.ratingsMap.get(userID));
             }
             TreeMap<Integer, Double> userRating = this.ratingsMap.get(userID);
@@ -55,13 +64,21 @@ public class RatingsCollection {
     }
 
     //DEBUGGING TOOL -- ERASE LATER!!
- public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {return ratingsMap;}
+    public TreeMap<Integer, TreeMap<Integer, Double>> getRatingsMap() {
+        return ratingsMap;
+    }
 
-    public void printMap(){
+    public void printMap() {
         System.out.println("Printing map");
-        for(Integer userID : ratingsMap.keySet()) {
-            System.out.println(userID);
+        System.out.println("NEW MAP STARTS HERE");
+        for (Integer userID : ratingsMap.keySet()) {
+            for (Integer movieID : ratingsMap.get(userID).keySet()) {
+                System.out.println(userID + " " + movieID + " " + ratingsMap.get(userID).get(movieID));
+            }
         }
+        System.out.println("MAP FINISHED");
+        System.out.println();
+
     }
 
 
@@ -97,6 +114,8 @@ public class RatingsCollection {
             System.out.println("Ratings file not found." + filepath + "/ratings.csv");
         }
     }
+
+
 
     /**
      * Calculates the Pearson correlation coefficient between a given
@@ -165,7 +184,6 @@ public class RatingsCollection {
 
             }
         }
-
         return userMax;
     }
 
@@ -265,6 +283,7 @@ public class RatingsCollection {
                 }
             } else {
                 System.out.println("Choose a different number.");
+                recs.println("Choose a different number.");
             }
             recs.flush();
         } catch (FileNotFoundException e) {

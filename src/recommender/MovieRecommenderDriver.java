@@ -18,9 +18,18 @@ public class MovieRecommenderDriver {
 
         parser.parseFile(new File(args[0]));
 
+        executor.shutdown();
+        try {
+            executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ExecutorService executor2 = Executors.newFixedThreadPool(1);
+
         bigCollection.printRankMovies();
 
-     // executor.execute(new Query(bigCollection, new File("input/smallSet")));
+      executor2.execute(new Query(bigCollection, new File("input/smallSet")));
 
 
 
@@ -29,14 +38,7 @@ public class MovieRecommenderDriver {
 //        bigCollection.rankList("input/smallSet/movies.csv");
 //        bigCollection.makeStarMovieList(3, 5, "input/smallSet/movies.csv", "input/smallSet/results/", "recs.csv");
 
-        executor.shutdown();
-        try {
-            executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        System.out.println("Program loaded");
     }
 
 
