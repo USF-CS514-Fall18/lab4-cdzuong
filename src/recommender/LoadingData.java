@@ -30,7 +30,7 @@ public class LoadingData implements Runnable {
     public void compileGlobalList() {
         synchronized (lock) {
             globalRatings.appendRatings(collection);
-            globalRatings.printMap();
+            // globalRatings.printMap();
             int counter = 0;
 //            for(Integer userID : collection.getMap().keySet()){
 //                System.out.println(userID);

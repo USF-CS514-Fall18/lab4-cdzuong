@@ -17,8 +17,7 @@ public class RatingsCollection {
     private TreeMap<Double, ArrayList<Movie>> movieMap;
     private ArrayList<Integer> highRUsers;
     private ArrayList<Movie> antiMovies;
-    private ArrayList<Movie> highMovies;
-    private ArrayList<Movie> compareMovies;
+    private ArrayList<Movie> movieRecs;
 
     /**
      * RatingsCollection constructor.
@@ -30,7 +29,7 @@ public class RatingsCollection {
         movieMap = new TreeMap<>();
         highRUsers = new ArrayList<>();
         antiMovies = new ArrayList<>();
-        highMovies = new ArrayList<>();
+        movieRecs = new ArrayList<>();
     }
 
     /**
@@ -49,7 +48,7 @@ public class RatingsCollection {
         movieMap = new TreeMap<>();
         highRUsers = new ArrayList<>();
         antiMovies = new ArrayList<>();
-        highMovies = new ArrayList<>();
+        movieRecs = new ArrayList<>();
     }
 
     public void appendRatings(RatingsCollection worker) {
@@ -114,7 +113,6 @@ public class RatingsCollection {
             System.out.println("Ratings file not found." + filepath + "/ratings.csv");
         }
     }
-
 
 
     /**
@@ -211,11 +209,10 @@ public class RatingsCollection {
                     if (movieIdRatings != movieIdMovieColl) {
                         Map<Integer, Movie> movieInner;
                         movieInner = rankMovies.get(rating);
-                        if (movieColl.getMap().get(movieIdRatings) == null){
+                        if (movieColl.getMap().get(movieIdRatings) == null) {
                             System.out.println(movieIdRatings + " Missing movieId");
-                        }
-                        else {
-                            movieInner.put(movieIdRatings, movieColl.getMap().get(movieIdRatings));
+                        } else {
+                            movieInner.put(movieIdRatings, movieColl.getMovie(movieIdRatings));
                         }
                     }
 
@@ -226,13 +223,13 @@ public class RatingsCollection {
 
         }
 
-      //  movieColl.printMovieMap();
+        //  movieColl.printMovieMap();
     }
 
-    public void printRankMovies(){
+    public void printRankMovies() {
         System.out.println("printing rank movies");
-        for(Double rating : rankMovies.keySet()){
-            for(Integer movieID : rankMovies.get(rating).keySet()){
+        for (Double rating : rankMovies.keySet()) {
+            for (Integer movieID : rankMovies.get(rating).keySet()) {
                 System.out.println(rating + " " + movieID + " " + rankMovies.get(rating).get(movieID));
             }
         }
@@ -273,18 +270,99 @@ public class RatingsCollection {
         movieColl.addMovie(dir);
         String rec;
 
+            movieRecs.addAll(movieMap.get(5.0));
+        movieRecs.addAll(movieMap.get(4.0));
+        movieRecs.addAll(movieMap.get(3.0));
+
+
         new File(write).getParentFile().mkdirs();
 
-        try (PrintWriter recs = new PrintWriter(new File( write + "Recs" + filename + ".csv"))) {
-            if (n <= movieMap.get(5.0).size()) {
-                for (int i = 0; i < n; i++) {
-                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
-                    recs.println(rec);
-                }
-            } else {
-                System.out.println("Choose a different number.");
-                recs.println("Choose a different number.");
-            }
+        try (PrintWriter recs = new PrintWriter(new File(write + "Recs" + filename + ".csv"))) {
+for (int i = 0; i < n; i++){
+    recs.println(movieRecs.get(i).getTitle());
+}
+
+//
+// System.out.println("Need " + n + "recs");
+//            System.out.println("5.0 map size: " + movieMap.get(5.0).size());
+//            System.out.println("4.5 map size: " + movieMap.get(4.5).size());
+//            System.out.println("4.0 map size: " + movieMap.get(4.0).size());
+//            System.out.println("3.5 map size: " + movieMap.get(3.5).size());
+//            if((n - (movieMap.get(5.0).size() + movieMap.get(4.5).size() + movieMap.get(4.0).size() + movieMap.get(3.5).size())) >= 0 && n < (movieMap.get(5.0).size() + movieMap.get(4.5).size() + movieMap.get(4.0).size() + movieMap.get(3.5).size() + movieMap.get(3.0).size())) {
+//                for (int i = 0; i < movieMap.get(5.0).size(); i++) {
+//                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                for (int i = 0; i < movieMap.get(4.5).size(); i++) {
+//                    rec = movieMap.get(4.5).get(i).getTitle() + " (" + movieMap.get(4.5).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                for (int i = 0; i < movieMap.get(4.0).size(); i++) {
+//                    rec = movieMap.get(4.0).get(i).getTitle() + " (" + movieMap.get(4.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                for (int i = 0; i < movieMap.get(3.5).size(); i++) {
+//                    rec = movieMap.get(3.5).get(i).getTitle() + " (" + movieMap.get(3.5).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                for (int i = 0; i < n - (movieMap.get(5.0).size() + movieMap.get(4.5).size() + movieMap.get(4.0).size() + movieMap.get(3.5).size()); i++) {
+//                    rec = movieMap.get(3.0).get(i).getTitle() + " (" + movieMap.get(3.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//            }
+
+
+
+            //WORKS FROM HERE.. THOUGH INCORRECTLY
+//            if ((n - (movieMap.get(5.0).size() + movieMap.get(4.0).size())) >= 0 && n < (movieMap.get(5.0).size() + movieMap.get(4.5).size() + movieMap.get(4.0).size() + movieMap.get(3.5).size())) {
+//                for (int i = 0; i < movieMap.get(5.0).size(); i++) {
+//                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                if (movieMap.get(4.5).size() != 0) {
+//                    for (int i = 0; i < movieMap.get(4.5).size(); i++) {
+//                        rec = movieMap.get(4.5).get(i).getTitle() + " (" + movieMap.get(4.5).get(i).getYear() + ")";
+//                        recs.println(rec);
+//                    }
+//                }
+//                for (int i = 0; i < movieMap.get(4.0).size(); i++) {
+//                    rec = movieMap.get(4.0).get(i).getTitle() + " (" + movieMap.get(4.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                for (int i = 0; i < n - (movieMap.get(5.0).size() + movieMap.get(4.5).size() + movieMap.get(4.0).size()); i++) {
+//                    rec = movieMap.get(3.5).get(i).getTitle() + " (" + movieMap.get(3.5).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//            } else if ((n - (movieMap.get(5.0).size())) >= 0 && n < (movieMap.get(5.0).size() + movieMap.get(4.0).size())) {
+//                for (int i = 0; i < movieMap.get(5.0).size(); i++) {
+//                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//
+//                for (int i = 0; i < (n - (movieMap.get(5.0).size())); i++) {
+//                    rec = movieMap.get(4.0).get(i).getTitle() + " (" + movieMap.get(4.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//            } else if ((n - (movieMap.get(5.0).size())) > 0 && n < (movieMap.get(5.0).size() + movieMap.get(4.5).size())) {
+//                for (int i = 0; i < movieMap.get(5.0).size(); i++) {
+//                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//                if (movieMap.get(4.5).size() != 0) {
+//                    for (int i = 0; i < (n - movieMap.get(5.0).size()); i++) {
+//                        rec = movieMap.get(4.5).get(i).getTitle() + " (" + movieMap.get(4.5).get(i).getYear() + ")";
+//                        recs.println(rec);
+//                    }
+//                }
+//            } else if ((n <= movieMap.get(5.0).size())) {
+//                for (int i = 0; i < n; i++) {
+//                    rec = movieMap.get(5.0).get(i).getTitle() + " (" + movieMap.get(5.0).get(i).getYear() + ")";
+//                    recs.println(rec);
+//                }
+//            } else {
+//                System.out.println("Choose a different number.");
+//                recs.println("Choose a different number.");
+//            }
             recs.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -314,7 +392,9 @@ public class RatingsCollection {
     }
 
     //DEBUGGER
-    public TreeMap<Integer, TreeMap<Integer, Double>> getMap(){return ratingsMap;}
+    public TreeMap<Integer, TreeMap<Integer, Double>> getMap() {
+        return ratingsMap;
+    }
 
 
 }

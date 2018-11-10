@@ -27,8 +27,9 @@ public class MovieRecommenderDriver {
 
         ExecutorService executor2 = Executors.newFixedThreadPool(1);
 
-        bigCollection.printRankMovies();
+//        bigCollection.printRankMovies();
 
+      executor2.execute(new Query(bigCollection, new File("input/smallSet")));
       executor2.execute(new Query(bigCollection, new File("input/smallSet")));
 
 

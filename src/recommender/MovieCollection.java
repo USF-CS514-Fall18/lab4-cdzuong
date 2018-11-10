@@ -29,12 +29,14 @@ public class MovieCollection {
         try {
             File file = new File(dir);
             Scanner input = new Scanner(file);
-            input.nextLine();
+
             int movieId = 0;
             String title = "";
             int year = 0;
 
             if (dir.contains("csv")) {
+
+                input.nextLine();
                 while (input.hasNextLine()) {
                     String lineRead = input.nextLine();
                     String[] splitLine;
@@ -68,6 +70,7 @@ public class MovieCollection {
                 }
             }
             else if (dir.contains("dat")){
+                input = new Scanner(file, "ISO-8859-1");
                 System.out.println("Contains dat file");
                 while (input.hasNextLine()) {
                     String lineRead = input.nextLine();
@@ -134,6 +137,8 @@ public class MovieCollection {
     public Map<Integer, Movie> getMap() {
         return movieMap;
     }
+
+    public Movie getMovie(int movieKey){return movieMap.get(movieKey);}
 
 
 }
